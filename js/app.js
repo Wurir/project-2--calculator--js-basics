@@ -13,13 +13,10 @@ Calculator.prototype.getHistoryAsString = function() {
 }
 
 Calculator.prototype.add = function(num1, num2) {
-    const num1Number = Number(num1)
-    const num2Number = Number(num2)
-    let result 
-    this.isNumber(num1Number, num2Number)
+    const {num1Number, num2Number, isValid} = this.parseAndValidate(num1, num2)
 
-    if(this.isNum) {
-        result = num1Number + num2Number
+    if(isValid) {
+        const result = num1Number + num2Number
         this.pushResult('+', num1, num2, result)
     }else {
         this.addError()
@@ -27,14 +24,10 @@ Calculator.prototype.add = function(num1, num2) {
 
 }
 Calculator.prototype.subtract = function(num1, num2) {
+    const {num1Number, num2Number, isValid} = this.parseAndValidate(num1, num2)
     
-    const num1Number = Number(num1)
-    const num2Number = Number(num2)
-    let result 
-    this.isNumber(num1Number, num2Number)
-    
-    if(this.isNum) {
-        result = num1Number - num2Number
+    if(isValid) {
+        const result = num1Number - num2Number
         this.pushResult('-', num1, num2, result)
     }else {
         this.addError()
@@ -42,12 +35,9 @@ Calculator.prototype.subtract = function(num1, num2) {
 
 }
 Calculator.prototype.multiply = function(num1, num2) {
-    const num1Number = Number(num1)
-    const num2Number = Number(num2)
-    let result 
-    this.isNumber(num1Number, num2Number)
+    const {num1Number, num2Number, isValid} = this.parseAndValidate(num1, num2)
 
-    if(this.isNum) {
+    if(isValid) {
         result = num1Number * num2Number
         this.pushResult('*', num1, num2, result)
     }else {
@@ -56,29 +46,21 @@ Calculator.prototype.multiply = function(num1, num2) {
 
 }
 Calculator.prototype.divide = function(num1, num2) {
-    const num1Number = Number(num1)
-    const num2Number = Number(num2)
-    let result 
-    this.isNumber(num1Number, num2Number)
+    const {num1Number, num2Number, isValid} = this.parseAndValidate(num1, num2)
 
-    if(this.isNum) {
-
-        result = num1Number / num2Number
+    if(isValid) {
+        const result = num1Number / num2Number
         this.pushResult('/', num1, num2, result)
     }else {
-
-        
         this.addError()
     }
 
 }
 Calculator.prototype.compound = function(num1, num2) {
-    const num1Number = Number(num1)
-    const num2Number = Number(num2)
-    let result = num1Number
-    this.isNumber(num1Number, num2Number)
-
-    if(this.isNum) {
+    const {num1Number, num2Number, isValid} = this.parseAndValidate(num1, num2)
+    
+    if(isValid) {
+        let result = num1Number
         for(let i=1; i<num2Number; i++){
             result *= num1Number
         }
@@ -90,10 +72,8 @@ Calculator.prototype.compound = function(num1, num2) {
 }
 Calculator.prototype.isNumber = function(number1, number2){
     if(!isNaN(number1) && !isNaN(number2)){
-        console.log('good');
         this.isNum = true
     } else {
-        console.log('bad');
         this.isNum = false
     }
 }
@@ -103,6 +83,12 @@ Calculator.prototype.pushResult = function(action, num1, num2, result){
 }
 Calculator.prototype.addError = function(){
     this.history.push('Wrong input')
+}
+Calculator.prototype.parseAndValidate = function(num1, num2){
+    const num1Number = Number(num1)
+    const num2Number = Number(num2)
+    this.isNumber(num1Number, num2Number)
+    return {num1Number, num2Number, isValid: this.isNum }
 }
 
 const calc = new Calculator();
@@ -135,8 +121,9 @@ do {
                 calc.compound(number1, number2);
                 break
             default:
-
+                break
         }
+    }else {
+        alert('Wrong action!')
     }
-    
 } while(calc.isCorrectAction(action));
