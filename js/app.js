@@ -38,7 +38,7 @@ Calculator.prototype.multiply = function(num1, num2) {
     const {num1Number, num2Number, isValid} = this.parseAndValidate(num1, num2)
 
     if(isValid) {
-        result = num1Number * num2Number
+        const result = num1Number * num2Number
         this.pushResult('*', num1, num2, result)
     }else {
         this.addError()
