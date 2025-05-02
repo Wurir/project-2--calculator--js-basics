@@ -17,11 +17,13 @@ Calculator.prototype.add = function(num1, num2) {
     const num2Number = Number(num2)
     let result 
 
-    if(typeof num1Number === 'number' && typeof num2Number === 'number') {
+    if(this.isNumber(num1Number, num1Number)) {
         result = num1Number + num2Number
+        this.pushResult('+', num1, num2, result)
+    }else {
+        this.addError()
     }
 
-    this.history.push(num1 + ' + ' + num2 + ' = ' + result)
 }
 Calculator.prototype.subtract = function(num1, num2) {
     
@@ -29,46 +31,68 @@ Calculator.prototype.subtract = function(num1, num2) {
     const num2Number = Number(num2)
     let result 
 
-    if(typeof num1Number === 'number' && typeof num2Number === 'number') {
+    if(this.isNumber(num1Number, num1Number)) {
         result = num1Number - num2Number
+        this.pushResult('-', num1, num2, result)
+    }else {
+        this.addError()
     }
 
-    this.history.push(num1 + ' - ' + num2 + ' = ' + result)
 }
 Calculator.prototype.multiply = function(num1, num2) {
     const num1Number = Number(num1)
     const num2Number = Number(num2)
     let result 
 
-    if(typeof num1Number === 'number' && typeof num2Number === 'number') {
+    if(this.isNumber(num1Number, num1Number)) {
         result = num1Number * num2Number
+        this.pushResult('*', num1, num2, result)
+    }else {
+        this.addError()
     }
 
-    this.history.push(num1 + ' * ' + num2 + ' = ' + result)
 }
 Calculator.prototype.divide = function(num1, num2) {
     const num1Number = Number(num1)
     const num2Number = Number(num2)
     let result 
 
-    if(typeof num1Number === 'number' && typeof num2Number === 'number') {
+    if(this.isNumber(num1Number, num1Number)) {
         result = num1Number / num2Number
+        this.pushResult('/', num1, num2, result)
+    }else {
+        this.addError()
     }
 
-    this.history.push(num1 + ' / ' + num2 + ' = ' + result)
 }
 Calculator.prototype.compound = function(num1, num2) {
     const num1Number = Number(num1)
     const num2Number = Number(num2)
     
     let result = num1Number
-    if(typeof num1Number === 'number' && typeof num2Number === 'number') {
+    if(this.isNumber(num1Number, num1Number)) {
         for(let i=1; i<num2Number; i++){
             result *= num1Number
         }
+        this.pushResult('^', num1, num2, result)
+    }else {
+        this.addError()
     }
-    
-    this.history.push(num1 + ' ^ ' + num2 + ' = ' + result)
+
+}
+Calculator.prototype.isNumber = function(number1, number2){
+    if(typeof number1 === 'number' && typeof number2 === 'number'){
+        return true
+    } else {
+        return false
+    }
+}
+
+Calculator.prototype.pushResult = function(action, num1, num2, result){
+    this.history.push(num1 + ' ' + action + ' ' + num2 + ' = ' + result)
+}
+Calculator.prototype.addError = function(){
+    this.history.push('Wrong input')
 }
 
 const calc = new Calculator();
@@ -84,20 +108,24 @@ do {
         number1 = prompt('Podaj liczbę nr 1');
         number2 = prompt('Podaj liczbę nr 2');
 
-        if(action === '+') {
-            calc.add(number1, number2);
-        }
-        if(action === '-') {
-            calc.subtract(number1, number2);
-        }
-        if(action === '*') {
-            calc.multiply(number1, number2);
-        }
-        if(action === '/') {
-            calc.divide(number1, number2);
-        }
-        if(action === '^') {
-            calc.compound(number1, number2);
+        switch (action){
+            case '+':
+                calc.add(number1, number2);
+                break
+            case '-':
+                calc.subtract(number1, number2);
+                break
+            case '*':
+                calc.multiply(number1, number2);
+                break
+            case '/':
+                calc.divide(number1, number2);
+                break
+            case '^':
+                calc.compound(number1, number2);
+                break
+            default:
+
         }
     }
     
