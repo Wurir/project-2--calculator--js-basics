@@ -1,6 +1,7 @@
 function Calculator() {
     this.actions = ['+', '-', '*', '/', '^'];
     this.history = [];
+    this.isNum
 }
 
 Calculator.prototype.isCorrectAction = function(action) {
@@ -12,12 +13,12 @@ Calculator.prototype.getHistoryAsString = function() {
 }
 
 Calculator.prototype.add = function(num1, num2) {
-    
     const num1Number = Number(num1)
     const num2Number = Number(num2)
     let result 
+    this.isNumber(num1Number, num2Number)
 
-    if(this.isNumber(num1Number, num1Number)) {
+    if(this.isNum) {
         result = num1Number + num2Number
         this.pushResult('+', num1, num2, result)
     }else {
@@ -30,8 +31,9 @@ Calculator.prototype.subtract = function(num1, num2) {
     const num1Number = Number(num1)
     const num2Number = Number(num2)
     let result 
-
-    if(this.isNumber(num1Number, num1Number)) {
+    this.isNumber(num1Number, num2Number)
+    
+    if(this.isNum) {
         result = num1Number - num2Number
         this.pushResult('-', num1, num2, result)
     }else {
@@ -43,8 +45,9 @@ Calculator.prototype.multiply = function(num1, num2) {
     const num1Number = Number(num1)
     const num2Number = Number(num2)
     let result 
+    this.isNumber(num1Number, num2Number)
 
-    if(this.isNumber(num1Number, num1Number)) {
+    if(this.isNum) {
         result = num1Number * num2Number
         this.pushResult('*', num1, num2, result)
     }else {
@@ -56,11 +59,15 @@ Calculator.prototype.divide = function(num1, num2) {
     const num1Number = Number(num1)
     const num2Number = Number(num2)
     let result 
+    this.isNumber(num1Number, num2Number)
 
-    if(this.isNumber(num1Number, num1Number)) {
+    if(this.isNum) {
+
         result = num1Number / num2Number
         this.pushResult('/', num1, num2, result)
     }else {
+
+        
         this.addError()
     }
 
@@ -68,9 +75,10 @@ Calculator.prototype.divide = function(num1, num2) {
 Calculator.prototype.compound = function(num1, num2) {
     const num1Number = Number(num1)
     const num2Number = Number(num2)
-    
     let result = num1Number
-    if(this.isNumber(num1Number, num1Number)) {
+    this.isNumber(num1Number, num2Number)
+
+    if(this.isNum) {
         for(let i=1; i<num2Number; i++){
             result *= num1Number
         }
@@ -81,10 +89,12 @@ Calculator.prototype.compound = function(num1, num2) {
 
 }
 Calculator.prototype.isNumber = function(number1, number2){
-    if(typeof number1 === 'number' && typeof number2 === 'number'){
-        return true
+    if(!isNaN(number1) && !isNaN(number2)){
+        console.log('good');
+        this.isNum = true
     } else {
-        return false
+        console.log('bad');
+        this.isNum = false
     }
 }
 
